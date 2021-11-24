@@ -1,0 +1,354 @@
+create database BDPA_CS_GUIA_TELEFONICA_Todo_Terminado_Excelente;
+use BDPA_CS_GUIA_TELEFONICA_Todo_Terminado_Excelente;
+#=======================================================================================================================================#
+-- -------------------------------------------------PROCEDIMIENTOS DE CREACION DE TABLAS --------------------------------------------- --
+#=======================================================================================================================================#
+-- 1)Tabla Zona
+delimiter $$
+create procedure Procedimiento_Crear_Tabla_Zona()
+begin 
+	create table Zona(Codigo_Zona int primary key auto_increment,
+	Nombre varchar(10));
+end $$
+delimiter ;
+call Procedimiento_Crear_Tabla_Zona();
+-- 2)Tabla Departamento
+delimiter $$
+create procedure Procedimiento_Crear_Tabla_Departamento()
+begin 
+	create table Departamento(Codigo_Departamento int primary key auto_increment,
+	Nombre varchar(20));
+end $$
+delimiter ;
+call Procedimiento_Crear_Tabla_Departamento();
+-- 3)Tabla Municipio
+delimiter $$
+create procedure Procedimiento_Crear_Tabla_Municipio()
+begin 
+	create table Municipio(Codigo_Municipio int primary key auto_increment,
+	Nombre varchar(10),
+    Codigo_Departamento int,
+    foreign key (Codigo_Departamento) references Departamento(Codigo_Departamento));
+end $$
+delimiter ;
+call Procedimiento_Crear_Tabla_Municipio();
+-- 4)Tabla Empresa
+delimiter $$
+create procedure Procedimiento_Crear_Tabla_Empresa()
+begin 
+	create table Empresa(Codigo_Empresa int primary key auto_increment,
+	Nombre varchar(30),
+	Correo varchar(50));
+end $$
+delimiter ;
+call Procedimiento_Crear_Tabla_Empresa();
+-- 5)Tabla Lugar
+delimiter $$
+create procedure Procedimiento_Crear_Tabla_Lugar()
+begin 
+	create table Lugar(Codigo_Lugar int primary key auto_increment,
+    Codigo_Empresa int,
+    Codigo_Zona int,
+    Codigo_Departamento int,
+    foreign key (Codigo_Empresa) references Empresa(Codigo_Empresa),
+    foreign key (Codigo_Zona) references Zona(Codigo_Zona),
+    foreign key (Codigo_Departamento) references Departamento(Codigo_Departamento));
+end $$
+delimiter ;
+call Procedimiento_Crear_Tabla_Lugar;
+-- 6)Tabla Telefono
+delimiter $$
+create procedure Procedimiento_Crear_Tabla_Telefono()
+begin 
+	create table Telefono(Codigo_Telefono int primary key auto_increment,
+    Codigo_Empresa int,
+    Telefono int,
+    foreign key (Codigo_Empresa) references Empresa(Codigo_Empresa));
+end $$
+delimiter ;
+call Procedimiento_Crear_Tabla_Telefono();
+#=======================================================================================================================================#
+-- ------------------------------------------PROCEDIMIENTOS DE INSERTAR DATOS EN LAS TABLAS ------------------------------------------ --
+#=======================================================================================================================================#
+-- 1)Tabla Zona
+Delimiter $$
+create procedure Ingresar_Zona(in ZonaZ Varchar(10))
+Begin 
+	insert into Zona(Nombre) values (ZonaZ);
+end $$
+Delimiter ;
+call Ingresar_Zona('Zona_1');
+call Ingresar_Zona('Zona_2');
+call Ingresar_Zona('Zona_3');
+call Ingresar_Zona('Zona_4');
+call Ingresar_Zona('Zona_5');
+-- 2)Tabla Departamento
+Delimiter $$
+create procedure Ingresar_Departamento(in DepartamentoD Varchar(20))
+Begin 
+	insert into Departamento(Nombre) values (DepartamentoD);
+end $$
+Delimiter ;
+call Ingresar_Departamento('Guatemala');
+call Ingresar_Departamento('Peten');
+call Ingresar_Departamento('Escuintla');
+call Ingresar_Departamento('Jutiapa');
+call Ingresar_Departamento('Jalapa');
+-- 3)Tabla Municipio
+Delimiter $$
+create procedure Ingresar_Municipio(in MunicipioM Varchar(20),in Codigo_DepartamentoCDM int)
+Begin 
+	insert into Municipio(Nombre,Codigo_Departamento) values (MunicipioM,Codigo_DepartamentoCDM);
+end $$
+Delimiter ;
+call Ingresar_Municipio('Guatemala',"1");
+call Ingresar_Municipio('Peten',"2");
+call Ingresar_Municipio('Escuintla',"3");
+call Ingresar_Municipio('Jutiapa',"4");
+call Ingresar_Municipio('Jalapa',"5");
+-- 4)Tabla Empresa
+Delimiter $$
+create procedure Ingresar_Empresa(in EmpresaE Varchar(20),in CorreoC varchar(30))
+Begin 
+	insert into Empresa(Nombre,Correo) values (EmpresaE,CorreoC);
+end $$
+Delimiter ;
+call Ingresar_Empresa('Molinos_Modernos','MolinosModernos@gmail.com');
+call Ingresar_Empresa('Pepsi','Pepsi@gmail.com');
+call Ingresar_Empresa('Coca-Cola','Coca-Cola@gmail.com');
+call Ingresar_Empresa('Susuki','Susuki@gmail.com');
+call Ingresar_Empresa('Honda','Honda@gmail.com');
+-- 5)Tabla Lugar
+Delimiter $$
+create procedure Ingresar_Lugar(in Codigo_Empresa_CE int,in Codigo_Zona_CZ int,in Codigo_Departamento_CD  int)
+Begin 
+	insert into Lugar(Codigo_Empresa,Codigo_Zona,Codigo_Departamento) values (Codigo_Empresa_CE,Codigo_Zona_CZ,Codigo_Departamento_CD);
+end $$
+Delimiter ;
+call Ingresar_Lugar("1","1","1");
+call Ingresar_Lugar("2","2","2");
+call Ingresar_Lugar("3","3","3");
+call Ingresar_Lugar("4","4","4");
+call Ingresar_Lugar("5","5","5");
+-- 6)Tabla Telefono
+Delimiter $$
+create procedure Ingresar_Telefono(in Codigo_Empresa_CE2 int,in Telefono_T int)
+Begin 
+	insert into Telefono(Codigo_Empresa,Telefono) values (Codigo_Empresa_CE2,Telefono_T);
+end $$
+Delimiter ;
+call Ingresar_Telefono("1","24743025");
+call Ingresar_Telefono("2","26543287");
+call Ingresar_Telefono("3","29875641");
+call Ingresar_Telefono("4","21122335");
+call Ingresar_Telefono("5","28659742");
+#=======================================================================================================================================#
+-- ------------------------------------------PROCEDIMIENTOS DE MODIFICAR DATOS EN LAS TABLAS ----------------------------------------- --
+#=======================================================================================================================================#
+-- 1)Tabla Zona
+Delimiter $$
+create procedure Modificar_Zona(in Nombre_Zona varchar(10),in id_Modificar int)
+begin
+update Zona set Nombre=Nombre_Zona where Codigo_Zona=id_Modificar;
+end $$
+Delimiter ;
+Call Modificar_Zona("Zona_21","1"); -- Modificacion al id_1
+Call Modificar_Zona("Zona_1","1"); -- Regresando los datos originales al id_1
+Call Modificar_Zona("Zona_22","2"); -- Modificacion al id_2
+Call Modificar_Zona("Zona_2","2"); -- Regresando los datos originales al id_2
+Call Modificar_Zona("Zona_23","3"); -- Modificacion al id_3
+Call Modificar_Zona("Zona_3","3"); -- Regresando los datos originales al id_3
+Call Modificar_Zona("Zona_24","4"); -- Modificacion al id_4
+Call Modificar_Zona("Zona_4","4"); -- Regresando los datos originales al id_4
+Call Modificar_Zona("Zona_25","5"); -- Modificacion al id_5
+Call Modificar_Zona("Zona_5","5"); -- Regresando los datos originales al id_5
+-- 2)Tabla Departamento
+Delimiter $$
+create procedure Modificar_Departamento(in Nombre_Departamento varchar(10),in id_Modificar2 int)
+begin
+update Departamento set Nombre=Nombre_Departamento where Codigo_Departamento=id_Modificar2;
+end $$
+Delimiter ;
+call Modificar_Departamento("GTML","1"); -- Modificacion al id_1
+call Modificar_Departamento("Guatemala","1"); -- Regresando los datos originales al id_1
+call Modificar_Departamento("PTN","2");  -- Modificacion al id_2
+call Modificar_Departamento("Peten","2"); -- Regresando los datos originales al id_2
+call Modificar_Departamento("ESC","3");  -- Modificacion al id_3
+call Modificar_Departamento("Escuintla","3"); -- Regresando los datos originales al id_3
+call Modificar_Departamento("JUT","4");  -- Modificacion al id_4
+call Modificar_Departamento("Jutiapa","4"); -- Regresando los datos originales al id_4
+call Modificar_Departamento("JAL","5");  -- Modificacion al id_5
+call Modificar_Departamento("Jalapa","5"); -- Regresando los datos originales al id_5
+-- 3)Tabla Municipio
+Delimiter $$
+create procedure Modificar_Municipio(in Nombre_Municipio varchar(10),in id_Modificar3 int)
+begin
+update Municipio set Nombre=Nombre_Municipio where Codigo_Municipio=id_Modificar3;
+end $$
+Delimiter ;
+call Modificar_Municipio("GTML","1"); -- Modificacion al id_1
+call Modificar_Municipio("Guatemala","1"); -- Regresando los datos originales al id_1
+call Modificar_Municipio("PTN","2");  -- Modificacion al id_2
+call Modificar_Municipio("Peten","2"); -- Regresando los datos originales al id_2
+call Modificar_Municipio("ESC","3");  -- Modificacion al id_3
+call Modificar_Municipio("Escuintla","3"); -- Regresando los datos originales al id_3
+call Modificar_Municipio("JUT","4");  -- Modificacion al id_4
+call Modificar_Municipio("Jutiapa","4"); -- Regresando los datos originales al id_4
+call Modificar_Municipio("JAL","5");  -- Modificacion al id_5
+call Modificar_Municipio("Jalapa","5"); -- Regresando los datos originales al id_5
+-- 4)Tabla Empresa
+Delimiter $$
+create procedure Modificar_Empresa(in Nombre_Empresa varchar(30),in Correo_Empresa varchar(50),in id_Modificar4 int)
+begin
+update Empresa set Nombre=Nombre_Empresa, Correo=Correo_Empresa where Codigo_Empresa=id_Modificar4;
+end $$
+Delimiter ;
+call  Modificar_Empresa("M_M","M_M@gmail.com","1"); -- Modificacion al id_1
+call  Modificar_Empresa("Molinos_Modernos","MolinosModernos@gmail.com","1"); -- Regresando los datos originales al id_1
+call  Modificar_Empresa("PS","PS@gmail.com","2"); -- Modificacion al id_2
+call  Modificar_Empresa("Pepsi","Pepsi@gmail.com","2");  -- Regresando los datos originales al id_2
+call  Modificar_Empresa("C-C","C-C@gmail.com","3"); -- Modificacion al id_3
+call  Modificar_Empresa("Coca-Cola","Coca-Cola@gmail.com","3");  -- Regresando los datos originales al id_3
+call  Modificar_Empresa("SK","SK@gmail.com","4"); -- Modificacion al id_4
+call  Modificar_Empresa("Susuki","Susuki@gmail.com","4");  -- Regresando los datos originales al id_4
+call  Modificar_Empresa("HD","HD@gmail.com","5"); -- Modificacion al id_5
+call  Modificar_Empresa("Honda","Honda@gmail.com","5");  -- Regresando los datos originales al id_5
+-- 5)Tabla Lugar
+Delimiter $$
+create procedure Modificar_Lugar(in Codigo_Empresa_CE int,in Codigo_Zona_CZ int,in Codigo_Departamento_CD int,in id_Modificar5 int)
+begin
+update Lugar set Codigo_Empresa=Codigo_Empresa_CE, Codigo_Zona=Codigo_Zona_CZ,Codigo_Departamento=Codigo_Departamento_CD
+where Codigo_Lugar=id_Modificar5;
+end $$
+Delimiter ;
+call  Modificar_Lugar("2","2","2","1"); -- Modificacion al id_1
+call  Modificar_Lugar("1","1","1","1");  -- Regresando los datos originales al id_1
+call  Modificar_Lugar("3","3","3","2"); -- Modificacion al id_2
+call  Modificar_Lugar("2","2","2","2");  -- Regresando los datos originales al id_2
+call  Modificar_Lugar("4","4","4","3"); -- Modificacion al id_3
+call  Modificar_Lugar("3","3","3","3");  -- Regresando los datos originales al id_3
+call  Modificar_Lugar("5","5","5","4"); -- Modificacion al id_4
+call  Modificar_Lugar("4","4","4","4");  -- Regresando los datos originales al id_4
+call  Modificar_Lugar("1","1","1","5"); -- Modificacion al id_5
+call  Modificar_Lugar("5","5","5","5");  -- Regresando los datos originales al id_5
+-- 6)Tabla Telefono
+Delimiter $$
+create procedure Modificar_Telefono(in Codigo_Empresa_CE7 int,in TelefonoT_7 int,in id_Modificar6 int)
+begin
+update Telefono set Codigo_Empresa=Codigo_Empresa_CE7, Telefono=TelefonoT_7
+where Codigo_Telefono=id_Modificar6;
+end $$
+Delimiter ;
+call  Modificar_Telefono("3","99999999","1"); -- Modificacion al id_1
+call  Modificar_Telefono("1","24743025","1");  -- Regresando los datos originales al id_1
+call  Modificar_Telefono("4","88888888","2"); -- Modificacion al id_2
+call  Modificar_Telefono("2","26543287","2");  -- Regresando los datos originales al id_2
+call  Modificar_Telefono("1","77777777","3"); -- Modificacion al id_3
+call  Modificar_Telefono("3","29875641","3");  -- Regresando los datos originales al id_3
+call  Modificar_Telefono("2","66666666","4"); -- Modificacion al id_4
+call  Modificar_Telefono("4","21122335","4");  -- Regresando los datos originales al id_4
+call  Modificar_Telefono("1","55555555","5"); -- Modificacion al id_5
+call  Modificar_Telefono("5","28659742","5");  -- Regresando los datos originales al id_5
+#=======================================================================================================================================#
+-- ------------------------------------------PROCEDIMIENTOS DE ELIMINAR DATOS EN LAS TABLAS ----------------------------------------- --
+#=======================================================================================================================================#
+-- 1)Tabla Telefono
+Delimiter $$
+create procedure Eliminar_Telefono2(in Codigo_Telefono_12 int)
+begin
+delete from Telefono where Codigo_Telefono=Codigo_Telefono_12;
+end $$
+Delimiter ;
+call Eliminar_Telefono2 ("2")
+-- 2)Tabla Municipio
+Delimiter $$
+create procedure Eliminar_Municipio2(in Codigo_Municipio_2 int)
+begin
+delete from Municipio where Codigo_Municipio=Codigo_Municipio_2;
+end $$
+Delimiter ;
+call Eliminar_Municipio2 ("2")
+-- 3) Tabla Lugar
+Delimiter $$
+create procedure Eliminar_Lugar2(in Codigo_Lugar_2 int)
+begin
+delete from Lugar where Codigo_Lugar=Codigo_Lugar_2;
+end $$
+Delimiter ;
+call Eliminar_Lugar2 ("1")
+#=======================================================================================================================================#
+-- ------------------------------------------PROCEDIMIENTOS DE CONSULTAS DE TABLAS POR CODIGO ---------------------------------------- --
+#=======================================================================================================================================#
+-- 1)Tabla Zona
+delimiter $$
+	create procedure Condulta_Zona(in Codigo_Zona_Nuevo int)
+    begin
+		select * from Zona where Codigo_Zona=Codigo_Zona_Nuevo;
+    end $$
+delimiter ;
+call Condulta_Zona(1);
+call Condulta_Zona(2);
+call Condulta_Zona(3);
+call Condulta_Zona(4);
+call Condulta_Zona(5);
+-- 2)Tabla Departamento
+delimiter $$
+	create procedure Condulta_Departamento(in Codigo_DepartamentoCDM int)
+    begin
+		select * from Departamento where Codigo_Departamento=Codigo_DepartamentoCDM;
+    end $$
+delimiter ;
+call Condulta_Departamento(1);
+call Condulta_Departamento(2);
+call Condulta_Departamento(3);
+call Condulta_Departamento(4);
+call Condulta_Departamento(5);
+-- 3)Tabla Municipio
+delimiter $$
+	create procedure Condulta_Municipio(in Codigo_MunicipioCMUN int)
+    begin
+		select * from Municipio where Codigo_Municipio=Codigo_MunicipioCMUN;
+    end $$
+delimiter ;
+call Condulta_Municipio(1);
+call Condulta_Municipio(2);
+call Condulta_Municipio(3);
+call Condulta_Municipio(4);
+call Condulta_Municipio(5);
+-- 4)Tabla Empresa
+delimiter $$
+	create procedure Condulta_Empresa(in Codigo_EmpresaCEM int)
+    begin
+		select * from Empresa where Codigo_Empresa= Codigo_EmpresaCEM;
+    end $$
+delimiter ;
+call Condulta_Empresa(1);
+call Condulta_Empresa(2);
+call Condulta_Empresa(3);
+call Condulta_Empresa(4);
+call Condulta_Empresa(5);
+-- 5)Tabla Lugar
+delimiter $$
+	create procedure Condulta_Lugar(in Codigo_LugarCLUG int)
+    begin
+		select * from Lugar where Codigo_Lugar= Codigo_LugarCLUG;
+    end $$
+delimiter ;
+call Condulta_Lugar(1);
+call Condulta_Lugar(2);
+call Condulta_Lugar(3);
+call Condulta_Lugar(4);
+call Condulta_Lugar(5);
+-- 6)Tabla Telefono
+delimiter $$
+	create procedure Condulta_Telefono(in Codigo_TelefonoCTFN int)
+    begin
+		select * from Telefono where Codigo_Telefono= Codigo_TelefonoCTFN;
+    end $$
+delimiter ;
+call Condulta_Telefono(1);
+call Condulta_Telefono(2);
+call Condulta_Telefono(3);
+call Condulta_Telefono(4);
+call Condulta_Telefono(5);
+#=======================================================================================================================================#
